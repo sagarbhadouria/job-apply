@@ -16,6 +16,7 @@ import yaml
 from . import digest as digest_mod
 from . import llm, mailer
 from .fetch import fetch_all
+from .jsearch import fetch_jsearch_multi
 from .mock import fetch_all_mock
 from .prefilter import prefilter
 from .providers import LLMError, resolve
@@ -98,15 +99,35 @@ def cmd_run(args) -> int:
     print("\n[1/5] fetching boards")
     if args.mock:
         jobs = fetch_all_mock()
+    elif args.jsearch:
+        # Use JSearch: auto-discover companies, no companies.yaml needed
+        jsearch_queries = cfg.get("jsearch_queries")
+        if not jsearch_queries:
+            # Default queries if not configured
+            jsearch_queries = [
+        {"query": "backend engineer", "country": "in", "date_posted": "3days"},
+        {"query": "software engineer", "country": "in", "date_posted": "3days"},
+        {"query": "java developer", "remote": True, "date_posted": "week"},
+
+            ]
+        try:
+            jobs = fetch_jsearch_multi(jsearch_queries)
+        except ValueError as e:
+            print(f"\n{e}")
+            return 1
     else:
+        # Use companies.yaml (traditional approach)
         companies = _cfg(cfg.get("companies_file", "companies.yaml")).get("companies") or []
         if not companies:
-            print("companies.yaml has no entries")
+            print("companies.yaml has no entries (or use --jsearch for auto-discovery)")
             return 1
         jobs = fetch_all(companies)
     scanned = len(jobs)
     if not scanned:
-        print("no postings fetched — check the slugs in companies.yaml")
+        msg = "no postings fetched"
+        if not args.jsearch:
+            msg += " — check the slugs in companies.yaml"
+        print(msg)
         return 1
 
     # ---- 2. prefilter + dedupe (deterministic, free, no LLM)
@@ -230,6 +251,8 @@ def main(argv=None) -> int:
 
     sr = sub.add_parser("run", help="run the daily pipeline")
     sr.add_argument("--mock", action="store_true", help="bundled fixtures, no network")
+    sr.add_argument("--jsearch", action="store_true",
+                    help="use JSearch API to auto-discover companies (no companies.yaml needed)")
     sr.add_argument("--scorer", choices=["llm", "keyword", "claude"], default="llm",
                     help="keyword = offline stub, needs no API key ('claude' is an "
                          "alias for 'llm', kept for older docs)")

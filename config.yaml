@@ -74,3 +74,32 @@ profile_file: profile.json
 seen_file: seen.json
 digest_file: out/digest.html
 tracker_csv: out/tracker.csv
+
+# --- JSearch auto-discovery (no companies.yaml needed) -------------------
+# If you run with --jsearch, these queries are used to search for jobs.
+# Without --jsearch, companies.yaml is used instead.
+jsearch_queries:
+  - query: backend engineer
+    country: in
+    date_posted: 3days # all, today, 3days, week, month
+    job_requirements: more_than_3_years_experience
+    exclude_job_publishers: Shine, LinkedIn, UnoJobs
+    results: 50
+  - query: software engineer
+    country: in
+    date_posted: 3days
+    job_requirements: more_than_3_years_experience
+    exclude_job_publishers: Shine, LinkedIn, UnoJobs
+    results: 50
+  - query: java developer
+    country: in
+    date_posted: 3days
+    job_requirements: more_than_3_years_experience
+    exclude_job_publishers: Shine, LinkedIn, UnoJobs
+    results: 100
+  - query: java backend developer
+    country: in
+    date_posted: 3days
+    job_requirements: more_than_3_years_experience
+    exclude_job_publishers: Shine, LinkedIn, UnoJobs
+    results: 100
