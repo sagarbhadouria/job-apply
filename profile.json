@@ -1,0 +1,48 @@
+{
+  "name": "Sagar Bhadouria",
+  "current_title": "Software Engineer II",
+  "years_experience": 5,
+  "core_skills": [
+    "Java",
+    "Spring Boot",
+    "Microservices",
+    "REST APIs",
+    "Google Cloud Platform (GCP)",
+    "Distributed Systems",
+    "Kafka",
+    "GitLab CI/CD",
+    "Docker",
+    "OpenShift",
+    "Spring AI",
+    "JPA",
+    "TDD (JUnit/Mockito)",
+    "SQL",
+    "Design Patterns",
+    "Spring AI",
+    "Observability (Splunk/Dynatrace)"
+  ],
+  "domains": [
+    "Banking & Financial Systems",
+    "Payments Infrastructure",
+    "Distributed Systems",
+    "Cloud Migration",
+    "Generative AI Integration",
+    "Cloud & DevOps"
+  ],
+  "notable_projects": [
+    "Monolith Modernization: Decomposed a legacy monolith into 13 Spring Boot microservices, reducing error rates by 20% for 75k+ users.",
+    "GCP Payment Infrastructure Migration: Upgraded 11 services to Java 17/Spring Boot 3 on GCP, processing ~1M daily transactions and cutting infra costs by 30%.",
+    "GitLab Deployment Automation: Built pipeline deploying 60+ services across environments, reducing deployment time from 1 hour to 15 minutes and cutting ops effort by 75%.",
+    "OceanResume: Built an AI-powered resume generator using Spring AI, Gemini 2.0 Flash, and Oracle Cloud Infrastructure, adopted by 100+ users."
+  ],
+  "education": "Bachelor of Engineering in Computer Science Engineering, Maharana Pratap College of Technology (2016–2020), GPA: 7.73/10",
+  "target_titles": [
+    "Senior Software Engineer",
+    "Senior Backend Engineer",
+    "Backend Engineer",
+    "Software Engineer II",
+    "Cloud Backend Engineer",
+    "Senior Java Developer"
+  ],
+  "seniority": "senior"
+}
