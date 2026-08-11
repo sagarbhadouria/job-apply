@@ -1,21 +1,6 @@
-"""Mock ATS payloads in each provider's exact native JSON shape.
-
-These exercise the real parsers, so `--mock` tests everything except the
-HTTP hop. Includes deliberate junk (wrong seniority, wrong city, wrong
-function, stale posting, an unlisted Ashby draft) so the filters have
-something to actually reject.
-
-Dates are computed relative to *now*, never hardcoded. A fixture with a
-hardcoded date silently ages past `max_age_days` and one day your demo
-returns zero jobs for no visible reason. `_STALE` is the only old one, and
-it is old on purpose.
-"""
-from __future__ import annotations
-
 from datetime import datetime, timedelta, timezone
-
-from .fetch import parse_greenhouse, parse_lever, parse_ashby, Job
-
+from .fetch import (parse_greenhouse, parse_lever, parse_ashby,
+                    parse_smartrecruiters, parse_workday, parse_breezy, parse_bamboohr, Job)
 
 def _ago(days: int) -> datetime:
     return datetime.now(timezone.utc) - timedelta(days=days)
@@ -33,146 +18,230 @@ def _lever(days: int) -> int:
 
 
 def _ashby(days: int) -> str:
-    return _ago(days).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    """Ashby: ISO 8601 UTC string."""
+    return _ago(days).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-
-STALE_DAYS = 280   # comfortably past any sane max_age_days
-
-_BACKEND_JD = """<p>We are building the control plane for our edge platform.</p>
-<p><strong>What you'll do</strong></p><ul>
-<li>Design and operate low-latency distributed services handling millions of RPS</li>
-<li>Work in Go and Java across caching, routing and traffic-steering systems</li>
-<li>Own reliability: on-call, incident response, capacity planning</li></ul>
-<p><strong>What we look for</strong></p><ul>
-<li>3+ years building backend systems at scale</li>
-<li>Strong fundamentals in data structures, algorithms and networking (TCP/IP, HTTP, DNS)</li>
-<li>Experience with Kubernetes and observability tooling</li></ul>"""
-
-_STAFF_JD = """<p>As a Staff Engineer you will set multi-year technical direction
-across three teams, mentor senior engineers, and own architecture for our
-petabyte-scale storage layer.</p><ul><li>10+ years of experience required</li>
-<li>Proven track record leading org-wide migrations</li></ul>"""
-
-_FRONTEND_JD = """<p>Build delightful UI in React and TypeScript. Own our design
-system, animations and accessibility work.</p>"""
-
-GREENHOUSE = {
-    "acme-edge": {"jobs": [
-        # keeper: right level, right city, fresh
-        {"id": 5501001, "title": "Software Engineer II, Distributed Systems",
-         "absolute_url": "https://boards.greenhouse.io/acme-edge/jobs/5501001",
-         "location": {"name": "Bangalore, India"},
-         "updated_at": _gh(2), "content": _BACKEND_JD},
-        # junk: wrong seniority
-        {"id": 5501002, "title": "Staff Software Engineer, Storage",
-         "absolute_url": "https://boards.greenhouse.io/acme-edge/jobs/5501002",
-         "location": {"name": "Bengaluru, KA"},
-         "updated_at": _gh(3), "content": _STAFF_JD},
-        # junk: wrong function
-        {"id": 5501003, "title": "Enterprise Account Executive",
-         "absolute_url": "https://boards.greenhouse.io/acme-edge/jobs/5501003",
-         "location": {"name": "Mumbai, India"},
-         "updated_at": _gh(4),
-         "content": "<p>Own a $3M quota selling to CIOs.</p>"},
-        # junk: wrong city, and not remote
-        {"id": 5501004, "title": "Backend Engineer, Payments",
-         "absolute_url": "https://boards.greenhouse.io/acme-edge/jobs/5501004",
-         "location": {"name": "San Francisco, CA"},
-         "updated_at": _gh(1), "content": _BACKEND_JD},
-        # junk: would pass every other gate, but it is ancient
-        {"id": 5501005, "title": "Senior Software Engineer, Platform",
-         "absolute_url": "https://boards.greenhouse.io/acme-edge/jobs/5501005",
-         "location": {"name": "Remote - India"},
-         "updated_at": _gh(STALE_DAYS), "content": _BACKEND_JD},
-    ]},
-    "novapay": {"jobs": [
-        # keeper: "SDE" spelled out — the bare regex "sde" would miss this
-        {"id": 7702001, "title": "Software Development Engineer, Core Infra",
-         "absolute_url": "https://boards.greenhouse.io/novapay/jobs/7702001",
-         "location": {"name": "Bengaluru, India"},
-         "updated_at": _gh(1),
-         "content": _BACKEND_JD + "<p>Java, Kafka, Postgres. Hybrid, 3 days in office.</p>"},
-        # junk: wrong discipline
-        {"id": 7702002, "title": "Frontend Engineer, Design Systems",
-         "absolute_url": "https://boards.greenhouse.io/novapay/jobs/7702002",
-         "location": {"name": "Bengaluru, India"},
-         "updated_at": _gh(2), "content": _FRONTEND_JD},
-    ]},
+MOCK_PAYLOADS = {
+    "greenhouse": {
+        "coinbase": {
+            "jobs": [
+                {
+                    "id": 102,
+                    "title": "Software Development Engineer, Core Infra",
+                    "updated_at": _gh(2),
+                    "absolute_url": "https://boards.greenhouse.io/coinbase/jobs/102",
+                    "location": {"name": "Remote - India"},
+                    "content": (
+                        "&lt;p&gt;Work on multi-region Kafka clusters, PostgreSQL routing, "
+                        "and cloud infrastructure.&lt;/p&gt;"
+                    ),
+                },
+                {
+                    "id": 103,
+                    "title": "Senior Software Engineer, Platform",
+                    "updated_at": _gh(40),  # Stale! Filtered out by freshness gate.
+                    "absolute_url": "https://boards.greenhouse.io/coinbase/jobs/103",
+                    "location": {"name": "Bengaluru, India"},
+                    "content": "&lt;p&gt;Legacy platform infra maintenance.&lt;/p&gt;",
+                },
+                {
+                    "id": 104,
+                    "title": "Frontend Engineer, UI/UX",
+                    "updated_at": _gh(1),  # Excluded discipline.
+                    "absolute_url": "https://boards.greenhouse.io/coinbase/jobs/104",
+                    "location": {"name": "Bengaluru, India"},
+                    "content": "&lt;p&gt;React, Next.js, and CSS design systems.&lt;/p&gt;",
+                },
+                {
+                    "id": 105,
+                    "title": "Software Engineer, Mobile",
+                    "updated_at": _gh(1),  # Excluded location.
+                    "absolute_url": "https://boards.greenhouse.io/coinbase/jobs/105",
+                    "location": {"name": "San Francisco, CA"},
+                    "content": "&lt;p&gt;iOS and Android native applications.&lt;/p&gt;",
+                },
+            ]
+        },
+        "acme-edge": {
+            "jobs": [
+                {
+                    "id": 5501001,
+                    "title": "Software Engineer II, Distributed Systems",
+                    "updated_at": _gh(1),
+                    "absolute_url": "https://boards.greenhouse.io/acmeedge/jobs/5501001",
+                    "location": {"name": "Bangalore, India"},
+                    "content": "&lt;p&gt;Build distributed services with Go and Rust. Work on consensus algorithms, distributed tracing, and high-performance systems.&lt;/p&gt;",
+                },
+                {
+                    "id": 5501002,
+                    "title": "Site Reliability Engineer",
+                    "updated_at": _gh(1),
+                    "absolute_url": "https://boards.greenhouse.io/acmeedge/jobs/5501002",
+                    "location": {"name": "Bengaluru, India"},
+                    "content": "&lt;p&gt;Operate and scale infrastructure. Kubernetes, Terraform, monitoring, and on-call rotations.&lt;/p&gt;",
+                }
+            ]
+        }
+    },
+    "lever": {
+        "cloudflare": [
+            {
+                "id": "201",
+                "text": "Backend Engineer (Go)",
+                "createdAt": _lever(1),
+                "hostedUrl": "https://jobs.lever.co/cloudflare/201",
+                "categories": {
+                    "location": "Bengaluru, India",
+                    "team": "Engineering",
+                },
+                "description": "<p>High performance network services in Go and Rust.</p>",
+                "lists": [
+                    {
+                        "text": "Requirements",
+                        "content": "<li>3+ years Go experience</li>",
+                    }
+                ],
+                "additionalPlain": "Focus on distributed caching and edge networks.",
+            },
+            {
+                "id": "202",
+                "text": "Account Executive, Enterprise Sales",
+                "createdAt": _lever(1),  # Excluded role function.
+                "hostedUrl": "https://jobs.lever.co/cloudflare/202",
+                "categories": {
+                    "location": "Bengaluru, India",
+                    "team": "Sales",
+                },
+                "description": "<p>Enterprise quota-carrying sales role.</p>",
+                "lists": [],
+                "additionalPlain": "B2B SaaS experience required.",
+            },
+            {
+                "id": "203",
+                "text": "Software Engineer, Edge Platform",
+                "createdAt": _lever(1),  # Wrong city (no remote option).
+                "hostedUrl": "https://jobs.lever.co/cloudflare/203",
+                "categories": {
+                    "location": "San Francisco, CA",
+                    "team": "Engineering",
+                },
+                "description": "<p>Edge computing systems.</p>",
+                "lists": [],
+                "additionalPlain": "On-site role in San Francisco.",
+            },
+        ],
+        "quantstack": [
+            {
+                "id": "401",
+                "text": "Backend Engineer (Go)",
+                "createdAt": _lever(2),
+                "hostedUrl": "https://jobs.lever.co/quantstack/401",
+                "categories": {
+                    "location": "Bengaluru, India",
+                    "team": "Engineering",
+                },
+                "descriptionPlain": "Build scalable market data pipeline.",
+                "lists": [
+                    {
+                        "text": "Requirements",
+                        "content": "<li>2-5 years backend experience</li>",
+                    }
+                ],
+                "additionalPlain": "No take-home assignments.",
+            }
+        ]
+    },
+    "ashby": {
+        "helioscale": {
+            "jobs": [
+                {
+                    "id": "9f8e7d6c-2222-4bbb-8888-000000000002",
+                    "title": "Software Engineer, Networking",
+                    "location": "Bengaluru, India",
+                    "isListed": False,  # Draft posting — parser must ignore this.
+                    "jobUrl": "https://jobs.ashbyhq.com/helioscale/unlisted",
+                    "publishedAt": _ashby(1),
+                    "descriptionPlain": "Draft posting that should never surface.",
+                },
+                {
+                    "id": "9f8e7d6c-2222-4bbb-8888-000000000003",
+                    "title": "Software Engineer, Networking",
+                    "location": "Bengaluru, India",
+                    "isListed": True,
+                    "jobUrl": "https://jobs.ashbyhq.com/helioscale/9f8e7d6c-2222-4bbb-8888-000000000003",
+                    "publishedAt": _ashby(1),
+                    "descriptionPlain": "Packet processing, kernel systems, and networking stack in C++ and Go.",
+                    "salary": "₹32L – ₹48L",
+                },
+                {
+                    "id": "9f8e7d6c-2222-4bbb-8888-000000000004",
+                    "title": "Data Scientist, Growth",
+                    "location": "Bengaluru, India",
+                    "isListed": True,
+                    "jobUrl": "https://jobs.ashbyhq.com/helioscale/9f8e7d6c-2222-4bbb-8888-000000000004",
+                    "publishedAt": _ashby(1),
+                    "descriptionHtml": "<p>Causal inference, experimentation, SQL &amp; Python.</p>",
+                },
+            ]
+        }
+    },
+    "smartrecruiters": {
+        "visa": {
+            "content": [
+                {
+                    "id": "sr-101",
+                    "name": "Backend Engineer (Go)",
+                    "location": {"city": "Bengaluru", "country": "India", "remote": True},
+                    "releasedDate": _ago(1).isoformat()
+                }
+            ]
+        }
+    },
+    "workday": {
+        "nvidia/NVIDIA_Careers": {
+            "jobPostings": [
+                {
+                    "externalPath": "/job/JR1982001",
+                    "title": "Infrastructure Engineer",
+                    "locationsText": "Hyderabad, India",
+                    "postedOn": _ago(1).strftime("%Y-%m-%d")
+                }
+            ]
+        }
+    },
+    "breezy": {
+        "acme": [
+            {
+                "_id": "bz-201",
+                "name": "Systems Software Engineer",
+                "location": {"name": "Bengaluru, India"},
+                "published_at": _ago(1).isoformat(),
+                "description": "<p>Low latency C++ systems programming.</p>"
+            }
+        ]
+    },
+    "bamboohr": {
+        "testco": {
+            "result": [
+                {
+                    "id": "301",
+                    "jobTitle": "Site Reliability Engineer",
+                    "location": {"city": "Gurgaon", "state": "HR"}
+                }
+            ]
+        }
+    }
 }
 
-LEVER = {
-    "quantstack": [
-        {"id": "a1b2c3d4-1111-4aaa-9999-000000000001",
-         "text": "Backend Engineer (Go)",
-         "hostedUrl": "https://jobs.lever.co/quantstack/a1b2c3d4-1111-4aaa-9999-000000000001",
-         "applyUrl": "https://jobs.lever.co/quantstack/a1b2c3d4-1111-4aaa-9999-000000000001/apply",
-         "categories": {"location": "Bangalore", "team": "Infrastructure",
-                        "commitment": "Full-time"},
-         "createdAt": _lever(2),
-         "descriptionPlain": "We run a real-time market data pipeline in Go. "
-                             "You will own ingestion, fan-out and the storage layer.",
-         "lists": [{"text": "Requirements",
-                    "content": "<li>2-5 years backend experience</li>"
-                               "<li>Go or Java, strong CS fundamentals</li>"
-                               "<li>Comfort with Kubernetes, gRPC, Kafka</li>"}],
-         "additionalPlain": "We interview with one system design round and one "
-                            "pair-programming round. No take-home."},
-        {"id": "a1b2c3d4-1111-4aaa-9999-000000000002",
-         "text": "Engineering Manager, Platform",
-         "hostedUrl": "https://jobs.lever.co/quantstack/a1b2c3d4-1111-4aaa-9999-000000000002",
-         "categories": {"location": "Bangalore", "team": "Platform",
-                        "commitment": "Full-time"},
-         "createdAt": _lever(3),
-         "descriptionPlain": "Lead a team of 8 engineers. 5+ years of people management required.",
-         "lists": []},
-        {"id": "a1b2c3d4-1111-4aaa-9999-000000000003",
-         "text": "Site Reliability Engineer",
-         "hostedUrl": "https://jobs.lever.co/quantstack/a1b2c3d4-1111-4aaa-9999-000000000003",
-         "categories": {"location": "Remote (India)", "team": "SRE",
-                        "commitment": "Full-time"},
-         "createdAt": _lever(1),
-         "descriptionPlain": "Own SLOs, on-call and incident response for a "
-                             "multi-region Kubernetes fleet. Terraform, Prometheus, Go.",
-         "lists": [{"text": "Nice to have",
-                    "content": "<li>CDN or edge networking background</li>"}]},
-    ],
-}
-
-ASHBY = {
-    "helioscale": {"jobs": [
-        {"id": "9f8e7d6c-2222-4bbb-8888-000000000001",
-         "title": "Software Engineer, Networking",
-         "location": "Bengaluru, India", "isListed": True,
-         "jobUrl": "https://jobs.ashbyhq.com/helioscale/9f8e7d6c-2222-4bbb-8888-000000000001",
-         "publishedAt": _ashby(1),
-         "compensation": {"compensationTierSummary": "₹32L – ₹48L"},
-         "descriptionPlain": "Work on our anycast network and HTTP proxy layer. "
-                             "You will tune TCP congestion control, build DNS "
-                             "steering logic and reduce p99 latency across POPs. "
-                             "We use Rust and Go. 2+ years experience."},
-        {"id": "9f8e7d6c-2222-4bbb-8888-000000000002",
-         "title": "Software Engineer, Networking",
-         "location": "Bengaluru, India", "isListed": False,
-         "jobUrl": "https://jobs.ashbyhq.com/helioscale/unlisted",
-         "publishedAt": _ashby(1),
-         "descriptionPlain": "Draft posting that should never surface."},
-        {"id": "9f8e7d6c-2222-4bbb-8888-000000000003",
-         "title": "Data Scientist, Growth",
-         "location": "Bengaluru, India", "isListed": True,
-         "jobUrl": "https://jobs.ashbyhq.com/helioscale/9f8e7d6c-2222-4bbb-8888-000000000003",
-         "publishedAt": _ashby(2),
-         "descriptionHtml": "<p>Causal inference, experimentation, SQL &amp; Python.</p>"},
-    ]},
-}
-
+# Convenience attributes for tests
+GREENHOUSE = MOCK_PAYLOADS["greenhouse"]
+LEVER = MOCK_PAYLOADS["lever"]
+ASHBY = MOCK_PAYLOADS["ashby"]
 
 def fetch_all_mock(companies=None) -> list[Job]:
     jobs: list[Job] = []
-    for slug, body in GREENHOUSE.items():
-        jobs += parse_greenhouse(slug, slug.replace("-", " ").title(), body)
-    for slug, body in LEVER.items():
-        jobs += parse_lever(slug, slug.title(), body)
-    for slug, body in ASHBY.items():
-        jobs += parse_ashby(slug, slug.title(), body)
-    print(f"  [mock] {len(jobs)} postings from {len(GREENHOUSE) + len(LEVER) + len(ASHBY)} boards")
+    jobs.extend(parse_greenhouse("coinbase", "Coinbase", MOCK_PAYLOADS["greenhouse"]["coinbase"]))
+    jobs.extend(parse_greenhouse("acme-edge", "Acme Edge", MOCK_PAYLOADS["greenhouse"]["acme-edge"]))
+    jobs.extend(parse_lever("cloudflare", "Cloudflare", MOCK_PAYLOADS["lever"]["cloudflare"]))
+    jobs.extend(parse_ashby("helioscale", "Helioscale", MOCK_PAYLOADS["ashby"]["helioscale"]))
     return jobs

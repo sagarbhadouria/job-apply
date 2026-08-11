@@ -23,18 +23,41 @@
 # noise and makes the prefilter counts impossible to reason about.
 
 companies:
-  - {ats: lever, slug: 3pillarglobal, name: 3Pillar Global}
-  - {ats: lever, slug: brillio-2, name: Brillio}
-  - {ats: lever, slug: turvo, name: Turvo}
-  - {ats: lever, slug: sonatype, name: Sonatype}
-  - {ats: lever, slug: everbridge, name: Everbridge}
-  - {ats: lever, slug: matillion, name: Matillion}
-  - {ats: lever, slug: paytm, name: Paytm}
-  - {ats: lever, slug: dnb, name: Dun & Bradstreet}
-  - {ats: lever, slug: zimperium, name: Zimperium}
-  - {ats: lever, slug: kobie, name: Kobie}
-  - {ats: greenhouse, slug: newrelic, name: New Relic}
-  - {ats: greenhouse, slug: modernizingmedicineinc, name: Modernizing Medicine}
-  - {ats: greenhouse, slug: highradius, name: HighRadius}
-  - {ats: greenhouse, slug: knowbe4, name: KnowBe4}
+  # ---------- Greenhouse ----------
+  - {ats: greenhouse, slug: 6sense, name: 6sense}
+  - {ats: greenhouse, slug: airbnb, name: Airbnb}
   - {ats: greenhouse, slug: coinbase, name: Coinbase}
+  - {ats: greenhouse, slug: creativefabrica, name: Creative Fabrica}
+  - {ats: greenhouse, slug: databricks, name: Databricks}
+  - {ats: greenhouse, slug: figma, name: Figma}
+  - {ats: greenhouse, slug: gitlab, name: GitLab}
+  - {ats: greenhouse, slug: robinhood, name: Robinhood}
+  - {ats: greenhouse, slug: squarespace, name: Squarespace}
+  - {ats: greenhouse, slug: stripe, name: Stripe}
+  - {ats: greenhouse, slug: vercel, name: Vercel}
+
+  # ---------- Lever ----------
+  - {ats: lever, slug: patsnap, name: Patsnap}
+  - {ats: lever, slug: remofirst, name: RemoFirst}
+  - {ats: lever, slug: remote, name: Remote}
+  - {ats: lever, slug: tala, name: Tala}
+  - {ats: lever, slug: trendyol, name: Trendyol}
+
+  # ---------- Ashby ----------
+  - {ats: ashby, slug: 0g, name: 0G}
+  - {ats: ashby, slug: hackerone, name: HackerOne}
+  - {ats: ashby, slug: moderntreasury, name: Modern Treasury}
+  - {ats: ashby, slug: netgear, name: NETGEAR}
+  - {ats: ashby, slug: snowflake, name: Snowflake}
+
+  # ---------- SmartRecruiters ----------
+  - {ats: smartrecruiters, slug: BoschGroup, name: Bosch}
+  - {ats: smartrecruiters, slug: Sodexo, name: Sodexo}
+  - {ats: smartrecruiters, slug: Wayfair, name: Wayfair}
+
+  # ---------- Workday ----------
+  # Format: subdomain/tenant/board
+  - {ats: workday, slug: salesforce.wd12/salesforce/External_Career_Site, name: Salesforce}
+
+  # ---------- Breezy ----------
+  - {ats: breezy, slug: nexthire, name: NextHire}
