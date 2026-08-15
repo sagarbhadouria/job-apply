@@ -96,7 +96,7 @@ def cmd_run(args) -> int:
     filters = cfg.get("filters", {}) or {}
 
     # ---- 1. fetch
-    print("\n[1/5] fetching boards")
+    print("\n[1/5] Fetching jobs from boards:")
     if args.mock:
         jobs = fetch_all_mock()
     elif args.jsearch:
@@ -131,7 +131,7 @@ def cmd_run(args) -> int:
         return 1
 
     # ---- 2. prefilter + dedupe (deterministic, free, no LLM)
-    print("\n[2/5] filtering")
+    print("\n[2/5] Filtering jobs:")
     jobs = prefilter(jobs, filters)
     passed_filters = len(jobs)
     jobs = store.unseen(jobs)
@@ -150,7 +150,7 @@ def cmd_run(args) -> int:
     # ---- 3. screen
     scorer = "keyword" if args.scorer == "keyword" else "llm"
     if scorer == "keyword":
-        print(f"\n[3/5] screening {len(jobs)} jobs (keyword stub — DEV ONLY)")
+        print(f"\n[3/5] Screening {len(jobs)} jobs (keyword stub — DEV ONLY)")
         llm.keyword_screen(jobs, profile)
     else:
         try:
@@ -158,7 +158,7 @@ def cmd_run(args) -> int:
         except LLMError as e:
             print(f"\n{e}\nNo key? Run with --scorer keyword for an offline dry run.")
             return 1
-        print(f"\n[3/5] screening {len(jobs)} jobs via {provider.name}/{model}")
+        print(f"\n[3/5] Screening {len(jobs)} jobs via {provider.name}/{model}:")
         llm.screen(jobs, profile,
                    batch_size=int(cfg.get("screen_batch_size", 8)),
                    jd_chars=int(cfg.get("screen_jd_chars", 1400)),
@@ -179,7 +179,7 @@ def cmd_run(args) -> int:
     print(f"  {len(shortlist)} scored >= {threshold}")
 
     # ---- 4. draft
-    print(f"\n[4/5] drafting kits for {len(shortlist)}")
+    print(f"\n[4/5] Drafting kits for {len(shortlist)}:")
     if not shortlist:
         print("  nothing cleared the threshold")
     elif scorer == "keyword" or args.no_draft:
@@ -195,7 +195,7 @@ def cmd_run(args) -> int:
             print(f"  ! drafting unavailable: {e}")
 
     # ---- 5. digest
-    print("\n[5/5] digest")
+    print("\n[5/5] Digest:")
     subject, doc = digest_mod.build(shortlist, scanned, candidates, store.stats())
     path = digest_mod.write(doc, cfg.get("digest_file", "out/digest.html"))
     print(f"  wrote {path}")
