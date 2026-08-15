@@ -72,8 +72,8 @@ max_per_digest: 10         # hard cap on expensive draft calls per run
 companies_file: companies.yaml
 profile_file: profile.json
 seen_file: seen.json
-digest_file: out/digest.html
-tracker_csv: out/tracker.csv
+digest_file: out/matched_jobs.html
+tracker_csv: out/jobs_found_tracker.csv
 
 # --- JSearch auto-discovery (no companies.yaml needed) -------------------
 # If you run with --jsearch, these queries are used to search for jobs.
