@@ -161,28 +161,28 @@ python -m jobhunt run --jsearch --send
 
 ```
 job-apply/
-├── README.md
-├── companies.yaml
-├── config.yaml
-├── jobhunt/
-│   ├── __init__.py
-│   ├── __main__.py
-│   ├── cli.py
-│   ├── digest.py
-│   ├── fetch.py
-│   ├── jsearch.py
-│   ├── llm.py
-│   ├── mailer.py
-│   ├── mock.py
-│   ├── providers.py
-│   └── store.py
-├── profile.example.json
-├── requirements.txt
-├── seen.json
+├── README.md                                    # Project documentation & usage guide
+├── companies.yaml                               # ATS company configurations (slugs, board names)
+├── config.yaml                                  # Pipeline settings (filters, thresholds, LLM configs)
+├── jobhunt/                                     # Main Python package
+│   ├── __init__.py                              # Package initialization
+│   ├── __main__.py                              # Entry point (`python -m jobhunt`)
+│   ├── cli.py                                   # CLI argument parser and pipeline orchestrator
+│   ├── digest.py                                # HTML digest builder with inline CSS
+│   ├── fetch.py                                 # ATS API fetchers (Greenhouse, Lever, Ashby, etc.)
+│   ├── jsearch.py                               # JSearch aggregator API client
+│   ├── llm.py                                   # Two-stage LLM screening & drafting
+│   ├── mailer.py                                # Email sending functionality
+│   ├── mock.py                                  # Mock data for testing without API keys
+│   ├── providers.py                             # LLM provider abstraction (Anthropic, Gemini, Groq, Ollama)
+│   └── store.py                                 # seen.json dedupe index + tracker CSV export
+├── profile.example.json                         # Sample profile JSON for reference
+├── requirements.txt                             # Python dependencies
+├── seen.json                                    # Dedupe index + application tracker
 └── tests/
     ├── __pycache__
-    ├── test_llm.py
-    └── test_parsers.py
+    ├── test_llm.py                              # LLM unit tests
+    └── test_parsers.py                          # ATS parser unit tests
 ```
 
 ## ⚙️ Tech Stack
