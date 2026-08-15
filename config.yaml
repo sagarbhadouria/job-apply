@@ -38,7 +38,7 @@ filters:
     - '\b(frontend|front-end|ios|android|mobile|game|designer)\b'
     - '\b(data scientist|machine learning scientist|research scientist)\b'
     - '\b(lmts|smts|lead|principal|staff|distinguished|fellow|architect|director|vp|vice president|head of|chief|cto|manager|management)\b'
-    - '\b(sre|site reliability|devops|security|ai/ml|machine learning|data engineer|etl|tableau|embedded)\b'
+    - '\b(sre|site reliability|infrastructure engineer|devops|security|ai/ml|machine learning|data engineer|etl|tableau|embedded)\b'
 
   # Substrings matched against "<location> <title>", case-insensitive.
   # Leave empty to accept every location.
@@ -81,25 +81,25 @@ tracker_csv: out/tracker.csv
 jsearch_queries:
   - query: backend engineer
     country: in
-    date_posted: 3days # all, today, 3days, week, month
+    date_posted: week # all, today, 3days, week, month
     job_requirements: more_than_3_years_experience
     exclude_job_publishers: Shine, LinkedIn, UnoJobs
     results: 50
   - query: software engineer
     country: in
-    date_posted: 3days
+    date_posted: week
     job_requirements: more_than_3_years_experience
     exclude_job_publishers: Shine, LinkedIn, UnoJobs
     results: 50
   - query: java developer
     country: in
-    date_posted: 3days
+    date_posted: week
     job_requirements: more_than_3_years_experience
     exclude_job_publishers: Shine, LinkedIn, UnoJobs
     results: 100
   - query: java backend developer
     country: in
-    date_posted: 3days
+    date_posted: week
     job_requirements: more_than_3_years_experience
     exclude_job_publishers: Shine, LinkedIn, UnoJobs
     results: 100
