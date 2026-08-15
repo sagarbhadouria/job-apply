@@ -62,7 +62,7 @@ The digest also includes a tracker CSV and stats on scanned/filtered/new jobs.
 ## 🔀 Core Workflow
 
 ```mermaid
-graph TD
+graph LR
     A[Raw Source Selection] --> B{Source Type}
     B -- Direct ATS --> C[Fetch & Parse]
     B -- JSearch API --> D[Batch Search]
