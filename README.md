@@ -19,7 +19,7 @@ Try out the live generator here:
 - AI-powered job discovery and filtering from multiple ATS platforms
 - Intelligent deterministic pre-filtering to minimize LLM costs
 - Two-stage LLM intelligence balancing cost and quality
-- Multi-source integration with Greenhouse, Lever, Ashby, JSearch, and more
+- Multi-source integration with Greenhouse, Workday, Lever, Ashby, JSearch, and more
 - Configurable candidate profiles and search filters
 - Batch processing for high-volume job description screening
 - Application kit generation with cover notes and tailored bullets
@@ -30,7 +30,7 @@ Try out the live generator here:
 The project follows a **five-stage funnel**:
 
 ### 1. Fetch
-Jobs are sourced from public ATS APIs (Greenhouse, Lever, Ashby, SmartRecruiters, Workday, Breezy, BambooHR) or the JSearch aggregator. No auth, no scraping, no ToS risk. If `--jsearch` is used, companies are auto-discovered from a role/location query; otherwise `companies.yaml` lists the boards to scrape.
+Jobs are sourced from public ATS APIs (Greenhouse, Workday, Lever, Ashby, SmartRecruiters, Breezy) or the JSearch aggregator. No auth, no scraping, no ToS risk. If `--jsearch` is used, companies are auto-discovered from a role/location query; otherwise `companies.yaml` lists the boards to scrape.
 
 ### 2. Prefilter (deterministic, free)
 Before any LLM call, a cheap deterministic filter drops jobs that don't match:
@@ -130,7 +130,7 @@ python -m jobfinder profile --resume path/to/your/resume.pdf
 cp .env.example .env
 ````
 
-### ▶️ Run the Application
+### ▶️ Run Application
 
 ```bash
 # Run the application in standard mode with limited job search (no email notifications)
@@ -169,7 +169,7 @@ job-apply/
 │   ├── __main__.py                              # Entry point (`python -m jobfinder`)
 │   ├── cli.py                                   # CLI argument parser and pipeline orchestrator
 │   ├── digest.py                                # HTML digest builder with inline CSS
-│   ├── fetch.py                                 # ATS API fetchers (Greenhouse, Lever, Ashby, etc.)
+│   ├── fetch.py                                 # ATS API fetchers (Greenhouse, Workday, Lever, etc.)
 │   ├── jsearch.py                               # JSearch aggregator API client
 │   ├── llm.py                                   # Two-stage LLM screening & drafting
 │   ├── mailer.py                                # Email sending functionality
