@@ -143,7 +143,7 @@ def cmd_run(args) -> int:
 
     if not jobs:
         subject, doc = digest_mod.build([], scanned, 0, store.stats())
-        path = digest_mod.write(doc, cfg.get("digest_file", "out/digest.html"))
+        path = digest_mod.write(doc, cfg.get("digest_file", "out/matched_jobs.html"))
         print(f"\nnothing new today. preview: {path}")
         return 0
 
@@ -197,7 +197,7 @@ def cmd_run(args) -> int:
     # ---- 5. digest
     print("\n[5/5] Digest:")
     subject, doc = digest_mod.build(shortlist, scanned, candidates, store.stats())
-    path = digest_mod.write(doc, cfg.get("digest_file", "out/digest.html"))
+    path = digest_mod.write(doc, cfg.get("digest_file", "out/matched_jobs.html"))
     print(f"  wrote {path}")
 
     sent = False
@@ -211,7 +211,7 @@ def cmd_run(args) -> int:
         print("  --send not passed, email skipped")
 
     store.record(jobs, emailed=sent)
-    csv_path = store.export_csv(cfg.get("tracker_csv", "out/tracker.csv"))
+    csv_path = store.export_csv(cfg.get("tracker_csv", "out/jobs_found_tracker.csv"))
 
     print(f"\nfunnel: {scanned} scanned -> {passed_filters} passed filters "
           f"-> {candidates} new -> {len(shortlist)} in digest")
@@ -232,7 +232,7 @@ def cmd_stats(args) -> int:
     cfg = _cfg(args.config)
     store = Store(cfg.get("seen_file", "seen.json"))
     print(json.dumps(store.stats(), indent=2))
-    print(f"csv: {store.export_csv(cfg.get('tracker_csv', 'out/tracker.csv'))}")
+    print(f"csv: {store.export_csv(cfg.get('tracker_csv', 'out/jobs_found_tracker.csv'))}")
     return 0
 
 
