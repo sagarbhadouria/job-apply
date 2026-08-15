@@ -35,6 +35,8 @@ companies:
   - {ats: greenhouse, slug: squarespace, name: Squarespace}
   - {ats: greenhouse, slug: stripe, name: Stripe}
   - {ats: greenhouse, slug: vercel, name: Vercel}
+  - {ats: greenhouse, slug: newrelic, name: New Relic}
+  - {ats: greenhouse, slug: phonepe, name: PhonePe}
 
   # ---------- Lever ----------
   - {ats: lever, slug: patsnap, name: Patsnap}
