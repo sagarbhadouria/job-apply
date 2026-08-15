@@ -1,4 +1,4 @@
-# JobApply - AI-Powered Career Navigation
+# JobFinder - AI-Powered Career Navigation
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge&logoSize=auto)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/sagarbhadouria/job-apply?style=for-the-badge)](https://github.com/sagarbhadouria/job-apply)
@@ -121,10 +121,10 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 
 # Test installation (If you see a mock job search and a generated digest, your installation is working)
-python -m jobhunt run --mock --scorer keyword
+python -m jobfinder run --mock --scorer keyword
 
 # Generate a profile (profile.json) from your resume (PDF or text)
-python -m jobhunt profile --resume path/to/your/resume.pdf
+python -m jobfinder profile --resume path/to/your/resume.pdf
 
 # Set up environment variables (supply your own API keys in .env)
 cp .env.example .env
@@ -134,19 +134,19 @@ cp .env.example .env
 
 ```bash
 # Run the application in standard mode with limited job search (no email notifications)
-python -m jobhunt run --limit 10
+python -m jobfinder run --limit 10
 
 # Run the application in standard mode with full job search (no email notifications)
-python -m jobhunt run
+python -m jobfinder run
 
 # Run the application in standard mode with full job search and send email notifications (ensure SMTP settings are configured in .env)
-python -m jobhunt run --send
+python -m jobfinder run --send
 
 # Run the application in JSearch mode for broad market exploration (no email notifications)
-python -m jobhunt run --jsearch
+python -m jobfinder run --jsearch
 
 # Run the application in JSearch mode for broad market exploration and send email notifications (ensure SMTP settings are configured in .env)
-python -m jobhunt run --jsearch --send
+python -m jobfinder run --jsearch --send
 ```
 
 ## 📚 Usage Guide
@@ -164,9 +164,9 @@ job-apply/
 ├── README.md                                    # Project documentation & usage guide
 ├── companies.yaml                               # ATS company configurations (slugs, board names)
 ├── config.yaml                                  # Pipeline settings (filters, thresholds, LLM configs)
-├── jobhunt/                                     # Main Python package
+├── jobfinder/                                     # Main Python package
 │   ├── __init__.py                              # Package initialization
-│   ├── __main__.py                              # Entry point (`python -m jobhunt`)
+│   ├── __main__.py                              # Entry point (`python -m jobfinder`)
 │   ├── cli.py                                   # CLI argument parser and pipeline orchestrator
 │   ├── digest.py                                # HTML digest builder with inline CSS
 │   ├── fetch.py                                 # ATS API fetchers (Greenhouse, Lever, Ashby, etc.)

@@ -25,7 +25,7 @@ from typing import Any, Iterable
 
 import requests
 
-UA = {"User-Agent": "jobhunt/1.0 (personal job search agent)"}
+UA = {"User-Agent": "jobfinder/1.0 (personal job search agent)"}
 TIMEOUT = 20
 
 _TAG = re.compile(r"<[^>]+>")

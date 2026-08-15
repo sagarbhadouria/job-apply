@@ -16,7 +16,7 @@ import requests
 
 from .fetch import Job, strip_html
 
-UA = {"User-Agent": "jobhunt/1.0 (personal job search agent)"}
+UA = {"User-Agent": "jobfinder/1.0 (personal job search agent)"}
 TIMEOUT = 30
 
 

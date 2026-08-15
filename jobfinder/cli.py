@@ -1,4 +1,4 @@
-"""jobhunt CLI: profile -> fetch -> prefilter -> screen -> draft -> digest -> mail.
+"""jobfinder CLI: profile -> fetch -> prefilter -> screen -> draft -> digest -> mail.
 
 The agent never submits an application. It finds, filters, ranks and drafts.
 A human reads the digest, edits the note, and presses submit.
@@ -52,10 +52,10 @@ def _load_profile(cfg: dict, allow_sample: bool) -> dict | None:
     sample = ROOT / "profile.example.json"
     if allow_sample and sample.exists():
         print(f"  ! {path} missing — using {sample.name} for this dry run.")
-        print("    Build the real one: python -m jobhunt profile --resume resume.pdf")
+        print("    Build the real one: python -m jobfinder profile --resume resume.pdf")
         return json.loads(sample.read_text(encoding="utf-8"))
 
-    print(f"missing {path} — run `python -m jobhunt profile --resume <file>` first")
+    print(f"missing {path} — run `python -m jobfinder profile --resume <file>` first")
     return None
 
 
@@ -239,7 +239,7 @@ def cmd_stats(args) -> int:
 def main(argv=None) -> int:
     _load_env()
     p = argparse.ArgumentParser(
-        prog="jobhunt",
+        prog="jobfinder",
         description="Personal job-search agent. Finds and drafts; never submits.")
     p.add_argument("--config", default="config.yaml")
     sub = p.add_subparsers(dest="cmd", required=True)

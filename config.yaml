@@ -1,4 +1,4 @@
-# jobhunt configuration. Everything tunable lives here — no editing Python.
+# jobfinder configuration. Everything tunable lives here — no editing Python.
 #
 # Tune `filters` first. It is deterministic, free, and it is what keeps the
 # LLM bill small: roughly 2000 raw postings -> 40 candidates before a single

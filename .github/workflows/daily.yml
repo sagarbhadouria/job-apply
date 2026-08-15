@@ -1,4 +1,4 @@
-name: daily job digest
+name: jobfinder daily digest
 
 on:
   schedule:
@@ -15,7 +15,7 @@ on:
 
 # Two runs sharing one dedupe store would race. Queue them instead.
 concurrency:
-  group: jobhunt-daily
+  group: jobfinder-daily
   cancel-in-progress: false
 
 permissions:
@@ -38,9 +38,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: seen.json
-          key: jobhunt-seen-${{ github.run_id }}
+          key: jobfinder-seen-${{ github.run_id }}
           restore-keys: |
-            jobhunt-seen-
+                      jobfinder-seen-
 
       - uses: actions/setup-python@v5
         with:
@@ -53,7 +53,7 @@ jobs:
       - name: Write profile.json
         # profile.json is gitignored (it is derived from your resume), so CI
         # gets it from a secret. Create it locally with
-        #   python -m jobhunt profile --resume resume.pdf
+        #   python -m jobfinder profile --resume resume.pdf
         # then paste the file contents into the PROFILE_JSON repo secret.
         env:
           PROFILE_JSON: ${{ secrets.PROFILE_JSON }}
@@ -82,9 +82,9 @@ jobs:
           MAIL_TO: ${{ secrets.MAIL_TO }}
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            python -m jobhunt run
+            python -m jobfinder run
           else
-            python -m jobhunt run --send
+                        python -m jobfinder run --send
           fi
 
       - name: Upload digest
