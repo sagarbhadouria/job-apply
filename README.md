@@ -48,15 +48,15 @@ The first LLM stage scores every surviving job 0–10 on genuine fit using the c
 Only the top-scoring jobs (default threshold 7.0, max 5) advance to the drafting stage. One LLM call per job with ~6000 chars of JD and the best model. Output: `fit_summary`, `tailored_bullets`, `gaps`, `cover_note`, `questions_to_ask`. Hard rule: never invent experience — every claim traces to the profile, gaps are listed honestly.
 
 ### 5. Digest (HTML output)
-The final HTML digest renders each shortlisted job as a card showing:
-- Title + score badge
-- Company + location + ATS tag
-- "Why it fits" summary
+The final Matched Jobs HTML renders each shortlisted job as a card showing:
+- Title + Score Badge
+- Company + Location + ATS tag
+- "Why job fits" summary
 - 3–4 tailored resume bullets
-- Honest gaps + how to address them
-- Cover note (edit before submitting)
+- Honest gaps + How to address them
+- Cover letter/note (edit before submitting)
 - 2 sharp questions to ask the employer
-- "Open & apply →" link to the original posting
+- "Apply →" link to the original posting
 
 The digest also includes a tracker CSV and stats on scanned/filtered/new jobs.
 
