@@ -1,4 +1,4 @@
-# JobFinder - AI-Powered Career Navigation
+# JobFinder: AI-Powered Job Scout
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge&logoSize=auto)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/sagarbhadouria/job-apply?style=for-the-badge)](https://github.com/sagarbhadouria/job-apply)
