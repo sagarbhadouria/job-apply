@@ -5,13 +5,13 @@
 
 ![Project Logo](https://raw.githubusercontent.com/sagarbhadouria/job-apply/main/assets/logo.png)
 
-_A sophisticated automation and intelligence engine for navigating the modern job search process. JobApply takes you from a raw resume to curated, tailored application content by leveraging Large Language Models (LLMs) at various stages of the funnel._
+_A sophisticated automation and intelligence engine for navigating the modern job search process. JobFinder is designed to dramatically reduce the time and effort spent searching for the right job. Instead of visiting multiple job boards and company career pages every day, JobFinder brings relevant opportunities together, analyzes them against your profile, and prepares the information you need to apply._
 
 ## 🌐 Live Project
 
 Try out the live generator here:
 
-🔗 **[JobApply Demo](https://job-apply-demo.vercel.app)**
+🔗 **[JobFinder Demo](https://job-finder-demo.vercel.app)**
 
 
 ## ✨ Features
@@ -22,8 +22,9 @@ Try out the live generator here:
 - Multi-source integration with Greenhouse, Workday, Lever, Ashby, JSearch, and more
 - Configurable candidate profiles and search filters
 - Batch processing for high-volume job description screening
-- Application kit generation with cover notes and tailored bullets
+- Application kit generation with a job fit summary, tailored resume bullets, identified gaps, a customizable cover note, and questions for the employer.
 - Remote-friendly location logic and recency checking
+- Job tracker with dedup to never review the same job twice (automatically recognizes previously seen/applied positions)
 
 ## 🧠 How It Works
 
@@ -58,6 +59,26 @@ The final HTML digest renders each shortlisted job as a card showing:
 - "Open & apply →" link to the original posting
 
 The digest also includes a tracker CSV and stats on scanned/filtered/new jobs.
+
+## 🎯 Day-to-Day Benefits
+
+1. **One Place to Find Jobs**
+   </br>JobFinder fetches postings from major ATS platforms (Greenhouse, Workday, Lever, Ashby, SmartRecruiters, Breezy) and JSearch mode — eliminating the need to manually search across multiple sites.
+
+2. **Jobs That Fit Your Profile**
+   </br>LLM-powered screening evaluates each role against your skills, experience, and preferences, prioritizing opportunities where you're the strongest candidate.
+
+3. **Application Ready for Every Match**
+   </br>Shortlisted jobs get a fit summary, tailored resume bullets, identified gaps, a customizable cover note, and interview questions — all grounded in your profile.
+
+4. **Never Review the Same Job Twice**
+   </br>Job tracker automatically recognizes previously seen/ applied positions, so regular runs only surface new, relevant opportunities.
+
+5. **Fully Configurable Search**
+   </br>Almost everything — companies, keywords, locations, remote jobs, freshness, filtering — is adjustable via `config.yaml` for targeted or market‑exploration mode.
+
+6. **Spend Less Time Searching, More Time Applying**
+   </br>Automates job discovery, filtering, profile matching, application prep, and tracking — turning hours of manual hunting into a focused shortlist of high-quality opportunities.
 
 ## 🔀 Core Workflow
 
