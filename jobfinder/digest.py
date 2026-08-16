@@ -7,12 +7,14 @@ from pathlib import Path
 
 from .fetch import Job
 
-BG = "#0f1115"
-CARD = "#171a21"
+BG = "#292929"
+COVER_NOTE_BG = "#292929"
+CARD = "#1A1A1A"
 LINE = "#262b36"
-TEXT = "#e6e8ec"
+TEXT = "#ECF9FF"
+BUTTON_TEXT = "#ECF9FF"
 MUTED = "#8b93a3"
-ACCENT = "#7c9cff"
+ACCENT = "#E65D3D"
 
 
 def _badge(score: float | None) -> str:
@@ -50,7 +52,7 @@ def _card(j: Job) -> str:
     cover_html = ""
     if cover:
         cover_html = _section("Cover note (edit before sending)",
-            f'<div style="margin-top:8px;padding:12px;background:#0d1017;'
+            f'<div style="margin-top:8px;padding:12px;background:{COVER_NOTE_BG};'
             f'border:1px solid {LINE};border-radius:8px;color:{TEXT};font-size:14px;'
             f'line-height:1.6;white-space:pre-wrap;">{html.escape(cover)}</div>')
 
@@ -62,15 +64,15 @@ def _card(j: Job) -> str:
   </div>
   <div style="color:{MUTED};font-size:13px;margin-top:5px;">{html.escape(meta)}</div>
   {para(j.reason or "")}
-  {_section("Why it fits", para(d.get("fit_summary", "")))}
+  {_section("Why job fits", para(d.get("fit_summary", "")))}
   {_section("Resume bullets for this role", _bullets(d.get("tailored_bullets", [])))}
   {_section("Honest gaps", _bullets(d.get("gaps", [])))}
   {cover_html}
-  {_section("Ask them", _bullets(d.get("questions_to_ask", [])))}
+  {_section("Questions you can ask them", _bullets(d.get("questions_to_ask", [])))}
   <div style="margin-top:16px;">
     <a href="{html.escape(j.url)}" style="display:inline-block;background:{ACCENT};
-       color:#0f1115;font-weight:700;font-size:14px;text-decoration:none;
-       padding:10px 18px;border-radius:8px;">Open &amp; apply →</a>
+       color:{BUTTON_TEXT};font-weight:700;font-size:14px;text-decoration:none;
+       padding:10px 18px;border-radius:8px;">Apply →</a>
     <span style="color:{MUTED};font-size:11px;margin-left:10px;">{html.escape(j.job_id)}</span>
   </div>
 </div>"""
@@ -91,16 +93,15 @@ def build(jobs: list[Job], scanned: int, candidates: int, stats: dict) -> tuple[
     html_doc = f"""<!doctype html><html><body style="margin:0;padding:20px;background:{BG};
 font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
 <div style="max-width:640px;margin:0 auto;">
-  <div style="color:{TEXT};font-size:22px;font-weight:800;">Your job digest</div>
+  <div style="color:{TEXT};font-size:22px;font-weight:800;">Jobs matching your profile</div>
   <div style="color:{MUTED};font-size:13px;margin:6px 0 20px 0;">
     {today} · scanned {scanned} postings · {candidates} passed filters ·
     {len(jobs)} made the cut<br>
-    tracker: {stats.get('tracked', 0)} seen · {stats.get('applied', 0)} applied
   </div>
   {body}
   <div style="color:{MUTED};font-size:11px;line-height:1.6;margin-top:18px;
        border-top:1px solid {LINE};padding-top:14px;">
-    Drafts are starting points, not send-ready. Read the JD, edit the note,
+    NOTE: Cover notes drafts are starting points, not send-ready. Read the JD, edit the note,
     then submit it yourself.
   </div>
 </div></body></html>"""
